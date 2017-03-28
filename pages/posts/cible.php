@@ -1,13 +1,10 @@
 <?php
 try
 {
-  	$message = [];
+	$message = [];
    	$donnee = [];
     // On se connecte à MySQL
     $bdd = new PDO('mysql:host=localhost;dbname=TP;charset=utf8', 'root', '');
-    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $bdd->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_OBJ);
-    $statement=$bdd->query('SELECT * FROM Users');
 }
 catch(Exception $e)
 {
@@ -15,55 +12,50 @@ catch(Exception $e)
         die('Erreur : '.$e->getMessage());
 }
  
- if(isset($_POST['robert'])){
- echo "submit OK";  
-      if(isset($_POST['lastName']) && $_POST['lastName']!=''){ 
+if(isset($_POST)){
+
+ 	 echo "coucou";
+   
+      if(isset($_POST['lastName']) && $_POST['lastName']!='') {
           $donnee['lastName'] = $_POST['lastName'];
-             echo "coucou ";
-      }
-      else{
+      }else{
           $message['danger'][] = 'Merci de mettre un nom';
-             echo "c'est de la merde";
       }
       if(isset($_POST['firstName']) && $_POST['firstName']!='') {
           $donnee['firstName'] = $_POST['firstName'];
-                       echo "coucou1 ";
       }else{
           $message['danger'][] = 'Merci de mettre un prénom';
       }
       if(isset($_POST['birthdate'])) {
-          $donnee['birthdate'] = $_POST['birthdate'];
-                       echo "coucou2 ";
+          $donnee['birthDate'] = $_POST['birthdate'];
       }else{
           $message['danger'][] = 'Merci de mettre une date de naissance';
       }
       if(isset($_POST['adress']) && $_POST['adress']!='') {
           $donnee['adress'] = $_POST['adress'];
-                       echo "coucou3 ";
       }else{
           $message['danger'][] = 'Merci de mettre un adresse';
       }
       if(isset($_POST['zipCode']) && $_POST['zipCode']!='') {
           $donnee['zipCode'] = $_POST['zipCode'];
-                       echo "coucou4 ";
       }else{
           $message['danger'][] = 'Merci de mettre un code postal';
       }
       if(isset($_POST['phoneNumber']) && $_POST['phoneNumber']!='') {
           $donnee['phoneNumber'] = $_POST['phoneNumber'];
-                       echo "coucou5 ";
       }else{
           $message['danger'][] = 'Merci de mettre un numéro de téléphone';
       }
 
 		$req = $bdd->prepare('INSERT INTO Users
-                              SET     lastName= :lastName,
+                              VALUES     lastName= :lastName,
                                       firstName= :firstName,
-                                      birthdate= :birthdate,
+                                      birthDate= :birthDate,
                                       adress= :adress,
                                       zipCode= :zipCode,
-                                      phoneNumber= :phoneNumber
+                                      phoneNumber= :phoneNumber,
                               ');
+		
 		$req->execute($donnee);
       
       	$message['success'][] = 'Utilisateur ajouté';
@@ -73,9 +65,9 @@ catch(Exception $e)
 	<div class="col-md-12">
 <!--//////////////////// FORMULAIRE ////////////////////-->
 
-		<form action="" method="post">
+		<form action="cible.php" method="post">
 			<label for="lastName">Nom</label>
-			<input type="text" name="lastName" maxlength="50"><br>
+			<input type="text" name="lastName" maxlength="50"> <br>
 			<label for="firstName">prenom</label>
 			<input type="text" name="firstName" maxlength="50"><br>
 			<label for="birthdate">Date de naissance</label>
@@ -86,7 +78,7 @@ catch(Exception $e)
 			<input type="number" name="zipCode" maxlength="5"><br>
 			<label for="phoneNumber">Télephone</label>
 			<input type="number" name="phoneNumber" maxlength="10"><br>
-			<input type="submit" name="robert">Envoie</input>
+			<button type="submit">Envoie</button>
 		</form>
 	</div> 
 </div>
